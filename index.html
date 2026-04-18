@@ -419,7 +419,7 @@
         </div>
     </div>
     <div class="footer">
-        🔄 atualização a cada 8s | <a href="/think" target="_blank" style="color:#60a5fa;">dados brutos (JSON)</a> | <i class="fas fa-code-branch"></i> IA simbólica · sem redes neurais
+        🔄 atualização a cada 8s | <a href="#" id="jsonLink" target="_blank" style="color:#60a5fa;">dados brutos (JSON)</a> | <i class="fas fa-code-branch"></i> IA simbólica · sem redes neurais
     </div>
 </div>
 
@@ -437,12 +437,6 @@
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
-
-    // Controles para dar um pouco de movimento (opcional, mas desabilitamos para manter o foco no avatar)
-    // const controls = new OrbitControls(camera, renderer.domElement);
-    // controls.enableZoom = false;
-    // controls.enablePan = false;
-    // controls.autoRotate = false;
 
     // Luzes
     const ambientLight = new THREE.AmbientLight(0x404060);
@@ -533,7 +527,6 @@
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
     });
-    // Disparar resize inicial
     setTimeout(() => {
         const event = new Event('resize');
         window.dispatchEvent(event);
@@ -567,15 +560,19 @@
         material.color.setHex(color);
         material.emissive.setHex(emissive);
         material.emissiveIntensity = intensity;
-        // Mudar também a cor das partículas do anel
         particleMaterial.color.setHex(color);
     }
-
-    // Expor função global para ser chamada pelo dashboard
     window.setAvatarColor = setAvatarColor;
 </script>
 
 <script>
+    // 🔁 BACKEND NO RENDER AQUI:
+    
+    const API_BASE_URL = 'https://nucleo-cognitivo-api.onrender.com/'; 
+
+    // Atualiza link do JSON bruto
+    document.getElementById('jsonLink').href = `${API_BASE_URL}/think`;
+
     // Partículas de fundo 2D (estilo rede neural)
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
@@ -631,13 +628,13 @@
 
     async function fetchState() {
         try {
-            const res = await fetch('/think');
+            const res = await fetch(`${API_BASE_URL}/think`);
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             updateUI(data);
         } catch (err) {
             console.warn(err);
-            document.getElementById('pensamento').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Falha na conexão com o servidor.';
+            document.getElementById('pensamento').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Falha na conexão com o servidor. Verifique se o backend está ativo.';
         }
     }
 
@@ -645,10 +642,7 @@
         const humor = data.estado?.humor || 'analítico';
         const interesse = data.estado?.interesse || '?';
         
-        // Atualiza avatar 3D
-        if (window.setAvatarColor) {
-            window.setAvatarColor(humor);
-        }
+        if (window.setAvatarColor) window.setAvatarColor(humor);
         
         const humorEl = document.getElementById('humorLabel');
         const iconMap = { confuso:'fa-question-circle', curioso:'fa-eye', reflexivo:'fa-moon', analítico:'fa-chart-line' };
@@ -693,7 +687,7 @@
         addChatMessage('Você', q, true);
         input.value = '';
         try {
-            const res = await fetch(`/ask?q=${encodeURIComponent(q)}`);
+            const res = await fetch(`${API_BASE_URL}/ask?q=${encodeURIComponent(q)}`);
             const data = await res.json();
             const reply = `${data.meuPensamento || data.nota}`;
             addChatMessage('Núcleo', reply, false);
