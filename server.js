@@ -6,8 +6,22 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
+// ===== CORS – permite requisições do GitHub Pages e outras origens =====
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  // Responde imediatamente às requisições OPTIONS (preflight)
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Serve arquivos estáticos (HTML, CSS, JS, imagens) da pasta atual
 app.use(express.static(__dirname));
+
+// ===== ROTAS DA API =====
 
 // Rota original: retorna o resultado completo do ciclo cognitivo
 app.get("/think", (req, res) => {
@@ -29,11 +43,7 @@ app.get("/ask", (req, res) => {
   });
 });
 
-
-
-
-
-// Rota de exportação de dados
+// Rota de exportação de dados (CSV ou JSON)
 app.get("/export", (req, res) => {
   const format = req.query.format || "json"; // json ou csv
   const result = runCore(); // executa um ciclo para ter dados atualizados
@@ -84,10 +94,12 @@ app.get("/export", (req, res) => {
   res.json(exportData);
 });
 
+// Inicia o servidor
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000");
   console.log("📁 Dashboard: http://localhost:3000/dashboard.html");
   console.log("Endpoints:");
   console.log("  GET /think - Executa um ciclo e retorna todo o estado");
   console.log("  GET /ask?q=sua pergunta - Interage com o núcleo");
+  console.log("  GET /export?format=csv - Exporta dados em CSV");
 });
