@@ -1,0 +1,150 @@
+[
+  {
+    "resumo": "explorando humanos",
+    "humor": "confuso",
+    "interesse": "humanos",
+    "intencao": "aprofundar humanos",
+    "peso": 1,
+    "timestamp": 1776532287098,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando tecnologia",
+    "humor": "confuso",
+    "interesse": "tecnologia",
+    "intencao": "aprofundar tecnologia",
+    "peso": 1,
+    "timestamp": 1776532266317,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando padrões",
+    "humor": "confuso",
+    "interesse": "padrões",
+    "intencao": "quero explorar padrões",
+    "peso": 1,
+    "timestamp": 1776532258093,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando humanos",
+    "humor": "analítico",
+    "interesse": "humanos",
+    "intencao": "quero explorar humanos",
+    "peso": 1,
+    "timestamp": 1776532250108,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando dados",
+    "humor": "analítico",
+    "interesse": "dados",
+    "intencao": "quero explorar dados",
+    "peso": 1,
+    "timestamp": 1776532242504,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando tecnologia",
+    "humor": "analítico",
+    "interesse": "tecnologia",
+    "intencao": "aprofundar tecnologia",
+    "peso": 1,
+    "timestamp": 1776532235035,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando tecnologia",
+    "humor": "confuso",
+    "interesse": "tecnologia",
+    "intencao": "aprofundar tecnologia",
+    "peso": 1,
+    "timestamp": 1776532226089,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando tecnologia",
+    "humor": "confuso",
+    "interesse": "tecnologia",
+    "intencao": "aprofundar tecnologia",
+    "peso": 1,
+    "timestamp": 1776532218106,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando dados",
+    "humor": "analítico",
+    "interesse": "dados",
+    "intencao": "quero explorar dados",
+    "peso": 1,
+    "timestamp": 1776532209904,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando tecnologia",
+    "humor": "confuso",
+    "interesse": "tecnologia",
+    "intencao": "aprofundar tecnologia",
+    "peso": 1,
+    "timestamp": 1776532202099,
+    "acessos": 0,
+    "tipo": "semantica"
+  },
+  {
+    "resumo": "explorando humanos",
+    "humor": "curioso",
+    "interesse": "humanos",
+    "intencao": "quero explorar humanos",
+    "peso": 1,
+    "timestamp": 1776531452261,
+    "acessos": 0,
+    "tipo": "semantica",
+    "consolidado": true,
+    "ocorrencias": 2
+  },
+  {
+    "resumo": "explorando tecnologia",
+    "humor": "curioso",
+    "interesse": "tecnologia",
+    "intencao": "aprofundar tecnologia",
+    "peso": 1,
+    "timestamp": 1776531452262,
+    "acessos": 0,
+    "tipo": "semantica",
+    "consolidado": true,
+    "ocorrencias": 2
+  },
+  {
+    "resumo": "explorando padrões",
+    "humor": "confuso",
+    "interesse": "padrões",
+    "intencao": "quero explorar padrões",
+    "peso": 1,
+    "timestamp": 1776531452262,
+    "acessos": 0,
+    "tipo": "semantica",
+    "consolidado": true,
+    "ocorrencias": 2
+  },
+  {
+    "resumo": "explorando dados",
+    "humor": "confuso",
+    "interesse": "dados",
+    "intencao": "quero explorar dados",
+    "peso": 1,
+    "timestamp": 1776531452262,
+    "acessos": 0,
+    "tipo": "semantica",
+    "consolidado": true,
+    "ocorrencias": 2
+  }
+]
