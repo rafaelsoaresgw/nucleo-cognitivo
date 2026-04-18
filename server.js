@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import runCore from "./core.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -6,17 +7,26 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// ===== CORS – permite requisições do GitHub Pages e outras origens =====
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  // Responde imediatamente às requisições OPTIONS (preflight)
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+// Configuração CORS usando a biblioteca oficial
+// Opção 1: Permitir todas as origens (mais simples para teste)
+// app.use(cors());
+
+// Opção 2: Permitir apenas origens específicas (recomendado para produção)
+const allowedOrigins = [
+  'https://rafaelsoaresgw.github.io',
+  'http://localhost:3000'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'A política CORS não permite acesso a partir desta origem.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
   }
-  next();
-});
+}));
 
 // Serve arquivos estáticos (HTML, CSS, JS, imagens) da pasta atual
 app.use(express.static(__dirname));
@@ -45,8 +55,8 @@ app.get("/ask", (req, res) => {
 
 // Rota de exportação de dados (CSV ou JSON)
 app.get("/export", (req, res) => {
-  const format = req.query.format || "json"; // json ou csv
-  const result = runCore(); // executa um ciclo para ter dados atualizados
+  const format = req.query.format || "json";
+  const result = runCore();
   const { memoria, estado, metaObjetivo, coerencia, diversidade, crenças } = result;
 
   const exportData = {
@@ -69,7 +79,6 @@ app.get("/export", (req, res) => {
   };
 
   if (format === "csv") {
-    // Converte para CSV (apenas memórias)
     const csvRows = [
       ["timestamp", "interesse", "humor", "peso", "intencao", "consolidado", "ocorrencias"]
     ];
@@ -90,16 +99,14 @@ app.get("/export", (req, res) => {
     return res.send(csvContent);
   }
 
-  // Padrão: JSON
   res.json(exportData);
 });
 
-// Inicia o servidor
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000");
   console.log("📁 Dashboard: http://localhost:3000/dashboard.html");
   console.log("Endpoints:");
-  console.log("  GET /think - Executa um ciclo e retorna todo o estado");
-  console.log("  GET /ask?q=sua pergunta - Interage com o núcleo");
-  console.log("  GET /export?format=csv - Exporta dados em CSV");
+  console.log("  GET /think");
+  console.log("  GET /ask?q=...");
+  console.log("  GET /export?format=csv");
 });
