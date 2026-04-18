@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import runCore from "./core.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -7,32 +6,46 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// Configuração CORS usando a biblioteca oficial
-// Opção 1: Permitir todas as origens (mais simples para teste)
-// app.use(cors());
-
-// Opção 2: Permitir apenas origens específicas (recomendado para produção)
+// ===== CONFIGURAÇÃO CORS (Substitua as origens permitidas) =====
+// Adicione aqui as origens (endereços) que poderão acessar sua API.
+// Para desenvolvimento local, adicione 'http://localhost:3000'.
+// Para o GitHub Pages, adicione 'https://rafaelsoaresgw.github.io'.
 const allowedOrigins = [
   'https://rafaelsoaresgw.github.io',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'http://localhost:5500'
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'A política CORS não permite acesso a partir desta origem.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
+// Middleware CORS
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  // Verifica se a origem da requisição está na lista de permitidas
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
   }
-}));
+  
+  // Permite que o navegador envie cookies/credenciais junto com a requisição
+  res.header("Access-Control-Allow-Credentials", "true");
+  
+  // Define os métodos HTTP permitidos
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  
+  // Define os cabeçalhos personalizados permitidos
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  
+  // Responde imediatamente às requisições do tipo OPTIONS (pré-voo)
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
 
 // Serve arquivos estáticos (HTML, CSS, JS, imagens) da pasta atual
 app.use(express.static(__dirname));
 
 // ===== ROTAS DA API =====
-
 // Rota original: retorna o resultado completo do ciclo cognitivo
 app.get("/think", (req, res) => {
   const result = runCore();
@@ -102,6 +115,7 @@ app.get("/export", (req, res) => {
   res.json(exportData);
 });
 
+// Inicia o servidor
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000");
   console.log("📁 Dashboard: http://localhost:3000/dashboard.html");
