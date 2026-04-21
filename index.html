@@ -419,7 +419,7 @@
         </div>
     </div>
     <div class="footer">
-        🔄 atualização a cada 8s | <a href="#" id="jsonLink" target="_blank" style="color:#60a5fa;">dados brutos (JSON)</a> | <i class="fas fa-code-branch"></i> IA simbólica · sem redes neurais
+        🔄 atualização a cada 8s | <a href="/think" target="_blank" style="color:#60a5fa;">dados brutos (JSON)</a> | <i class="fas fa-code-branch"></i> IA simbólica · sem redes neurais
     </div>
 </div>
 
@@ -566,12 +566,11 @@
 </script>
 
 <script>
-    // 🔁 BACKEND NO RENDER AQUI:
-    
-    const API_BASE_URL = 'https://nucleo-cognitivo-api.onrender.com/'; 
+    // 🔁 Usando caminhos relativos (sem API_BASE_URL fixa)
+    // Assim, o frontend se comunica com o próprio servidor que o serviu.
 
-    // Atualiza link do JSON bruto
-    document.getElementById('jsonLink').href = `${API_BASE_URL}/think`;
+    // Atualiza link do JSON bruto (agora relativo)
+    document.getElementById('jsonLink').href = '/think';
 
     // Partículas de fundo 2D (estilo rede neural)
     const canvas = document.getElementById('canvas-bg');
@@ -628,7 +627,7 @@
 
     async function fetchState() {
         try {
-            const res = await fetch(`${API_BASE_URL}/think`);
+            const res = await fetch('/think');
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             updateUI(data);
@@ -687,7 +686,7 @@
         addChatMessage('Você', q, true);
         input.value = '';
         try {
-            const res = await fetch(`${API_BASE_URL}/ask?q=${encodeURIComponent(q)}`);
+            const res = await fetch(`/ask?q=${encodeURIComponent(q)}`);
             const data = await res.json();
             const reply = `${data.meuPensamento || data.nota}`;
             addChatMessage('Núcleo', reply, false);
